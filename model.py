@@ -86,8 +86,16 @@ def add_bias_column(X):
 def make_shuffled_indices(n_samples, seed):
     return np.random.default_rng(seed = seed).permutation(n_samples)
 
-# Step 11 - partition_indices (not yet solved)
-# TODO: implement
+# Step 11 - partition_indices
+def partition_indices(indices, train_ratio, val_ratio):
+    indices = np.asarray(indices, dtype = int)
+    n = indices.shape[0]
+    first = int(train_ratio * n)
+    second = first + int(val_ratio * n)
+    train_idx = indices[:first]
+    val_idx = indices[first:second]
+    test_idx = indices[second:]
+    return train_idx, val_idx, test_idx
 
 # Step 12 - subset_xy (not yet solved)
 # TODO: implement
