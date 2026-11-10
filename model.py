@@ -179,8 +179,18 @@ def prepare_cleaned_features(X, iqr_k=1.5):
     X = clip_columns(X, lower, upper)
     return X
 
-# Step 20 - assemble_feature_matrix (not yet solved)
-# TODO: implement
+# Step 20 - assemble_feature_matrix
+import numpy as np
+def assemble_feature_matrix(X_num, ratio_num_idx, ratio_den_idx, cat_labels=None):
+    X_num = np.asarray(X_num, dtype = float)
+    num = X_num[:,ratio_num_idx]
+    den = X_num[:,ratio_den_idx]
+    ratio = make_ratio_feature(num, den)
+    X_num = append_column(X_num, ratio)
+    if cat_labels is not None:
+        encoding = one_hot_encode(cat_labels)
+        X_num = append_column(X_num, encoding)
+    return X_num
 
 # Step 21 - make_train_val_test (not yet solved)
 # TODO: implement
