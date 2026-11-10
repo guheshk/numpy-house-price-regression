@@ -200,7 +200,9 @@ def make_train_val_test(X, y, train_ratio, val_ratio, seed):
     X_train, y_train = subset_xy(X, y, train_idx)
     X_val, y_val = subset_xy(X, y, val_idx)
     X_test, y_test = subset_xy(X, y, test_idx)
-    splits = {'X_train' : X_train, 'y_train' : y_train, 'X_val' : X_val, 'y_val' : y_val, 'X_test' : X_test, 'y_test' : y_test}
+    splits = {'X_train' : X_train, 'y_train' : y_train,
+              'X_val' : X_val, 'y_val' : y_val,
+              'X_test' : X_test, 'y_test' : y_test}
     return splits
 
 # Step 22 - standardize_and_add_bias (not yet solved)
