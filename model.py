@@ -53,8 +53,11 @@ def append_column(X, col):
     new_X = np.column_stack((X, col))
     return new_X
 
-# Step 6 - one_hot_encode (not yet solved)
-# TODO: implement
+# Step 6 - one_hot_encode
+def one_hot_encode(labels):
+    labels = np.asarray(labels)
+    classes, idx = np.unique(labels, return_inverse = True)
+    return np.eye(len(classes))[idx]
 
 # Step 7 - fit_standardizer (not yet solved)
 # TODO: implement
