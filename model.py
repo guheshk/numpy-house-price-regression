@@ -231,7 +231,6 @@ def house_price_pipeline(X, y, ratio_num_idx, ratio_den_idx, cat_labels=None, tr
     y = np.asarray(y, dtype = float)
 
     X = prepare_cleaned_features(X, iqr_k)
-    y = prepare_cleaned_features(y.reshape(-1,1), iqr_k)
     X = assemble_feature_matrix(X, ratio_num_idx, ratio_den_idx, cat_labels)
     splits = make_train_val_test(X, y, train_ratio, val_ratio,seed)
     std_splits, mean_X, std_X = standardize_and_add_bias(splits)
