@@ -111,14 +111,10 @@ def subset_xy(X, y, indices):
 
 # Step 13 - ols_fit
 def ols_fit(X, y):
-    X = np.asarray(X, dtype = float)
-    y = np.asarray(y, dtype = float)
-
-    XtX = X.T @ X
-    Xty = X.T @ y.reshape(-1,1)
-
-    theta = np.linalg.solve(XtX, Xty)
-    return theta.flatten()
+    X = np.asarray(X, dtype=float)
+    y = np.asarray(y, dtype=float).reshape(-1)
+    theta, *_ = np.linalg.lstsq(X.T @ X, X.T @ y, rcond=None)
+    return theta
 
 # Step 14 - ols_predict
 def ols_predict(X, theta):
@@ -229,6 +225,32 @@ def evaluate_predictions(y_true, y_pred):
                    'residual_summary' : residual_summary(y_true, y_pred)}
     return predictions
 
-# Step 24 - house_price_pipeline (not yet solved)
-# TODO: implement
+# Step 24 - house_price_pipeline
+def house_price_pipeline(X, y, ratio_num_idx, ratio_den_idx, cat_labels=None, train_ratio=0.7, val_ratio=0.15, seed=42, iqr_k=1.5):
+    X = np.asarray(X, dtype = float)
+    y = np.asarray(y, dtype = float)
+
+    X = prepare_cleaned_features(X, iqr_k)
+    y = prepare_cleaned_features(y.reshape(-1,1), iqr_k)
+    X = assemble_feature_matrix(X, ratio_num_idx, ratio_den_idx, cat_labels)
+    splits = make_train_val_test(X, y, train_ratio, val_ratio,seed)
+    std_splits, mean_X, std_X = standardize_and_add_bias(splits)
+
+    X_train, y_train = std_splits['X_train'], std_splits['y_train']
+    X_val, y_val = std_splits['X_val'], std_splits['y_val']
+    X_test, y_test = std_splits['X_test'], std_splits['y_test']
+    
+    theta = ols_fit(X_train, y_train)
+    y_test_pred = ols_predict(X_test, theta)
+    y_val_pred = ols_predict(X_val, theta)
+
+    test_metrics = evaluate_predictions(y_test, y_test_pred)
+    val_metrics = evaluate_predictions(y_val, y_val_pred)
+
+    results = {'theta' : theta,
+               'y_test' : y_test, 'y_test_pred' : y_test_pred,
+               'test_metrics' : test_metrics,
+               'val_metrics' : val_metrics}
+    
+    return results
 
