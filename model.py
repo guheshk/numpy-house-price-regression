@@ -119,8 +119,12 @@ def ols_fit(X, y):
     theta = np.linalg.solve(XtX, Xty)
     return theta.flatten()
 
-# Step 14 - ols_predict (not yet solved)
-# TODO: implement
+# Step 14 - ols_predict
+def ols_predict(X, theta):
+    X = np.asarray(X, dtype = float)
+    theta = np.asarray(theta, dtype = float)
+    pred = X @ theta
+    return pred
 
 # Step 15 - mean_absolute_error (not yet solved)
 # TODO: implement
