@@ -108,8 +108,16 @@ def subset_xy(X, y, indices):
 
     return X_sub, y_sub
 
-# Step 13 - ols_fit (not yet solved)
-# TODO: implement
+# Step 13 - ols_fit
+def ols_fit(X, y):
+    X = np.asarray(X, dtype = float)
+    y = np.asarray(y, dtype = float)
+
+    XtX = X.T @ X
+    Xty = X.T @ y.reshape(-1,1)
+
+    theta = np.linalg.solve(XtX, Xty)
+    return theta.flatten()
 
 # Step 14 - ols_predict (not yet solved)
 # TODO: implement
